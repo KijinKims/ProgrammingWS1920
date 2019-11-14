@@ -33,8 +33,8 @@ If condition of conditional statements is single integer or character and many c
 
 Missing **break** or **default** can make unintended result and be hard to be found. For example,
 switch(a){
-    case(1): x + 1;
-    case(2): x - 1;
+	case(1): x + 1;
+	case(2): x - 1;
 }
 the switch statement above looks concise and good (and don't cause compile/runtime error). However, for the case when a is 1, x becomes not x+1 but keeps x because operation under case with 2 will be done as well. In addition, missing **default** make it impossible to deal with cases other than 1 and 2.
 
@@ -54,4 +54,22 @@ data of array intArray can be accessed with ptr like this way, *ptr.
 
 ## Q11
 
-When the function returns the value for another function, 
+When the function returns the value for another function, the value can be passed in either pass-by-value or pass-by-reference. Pass-by-value is done by copy of returned data into another memory location. On the other hand, in pass-by-reference, the direct access to data in original memory is passed. For example,
+int f(){int a = 1; return a;} makes pass-by-value.
+int& g(){int b = 1; return b;} makes pass-by-reference. For this case, variable b will be deleted after function call. So, it possibly cause error.
+
+## Q12
+
+Declaration is saying to compiler that certain form of elements will be used with data with certain data type.
+Definition, however, is putting actual value and memory to declared elements.
+
+## Q13
+
+Namespace is the way of limiting scope for elements. If some elements have same name but in distinct namespace, it can be used. Namespace is typically used when some elements have shared property or belongings in same way, so it should be differentiated with others not to be confused with them.
+
+## Q14
+
+
+
+
+
