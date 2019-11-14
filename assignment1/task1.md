@@ -69,7 +69,8 @@ Namespace is the way of limiting scope for elements. If some elements have same 
 
 ## Q14
 
+Normally, header is used with less careful inspection. And it can make other users use redundant or unanticipated dependencies from other files.
 
+## Q16
 
-
-
+Static store is determined at compile time. So in the case we cannot know size and numbers of elements, we can use free store. It use heap memory and its size is determined at runtime. It gives more flexibility and usability.
