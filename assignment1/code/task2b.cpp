@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 
+// leaving out & can fix the problem
 unsigned int get_max(unsigned int a, unsigned int b) {
   unsigned int c = a > b ? a : b;
   return c;

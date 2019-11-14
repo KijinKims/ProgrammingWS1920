@@ -9,6 +9,7 @@ int main() {
       v.push_back(i);
   }
 
+  // auto to int can fix the problem
   for (int i = v.size() - 1; i >= 0; --i) {
       std::cout << i << ": " << v[i] << std::endl;
   }

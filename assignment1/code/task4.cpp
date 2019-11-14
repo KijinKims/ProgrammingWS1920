@@ -14,25 +14,26 @@ std::string where(std::string arg, std::vector<std::string>& input_v){
 
 int main(int argc, char* argv[]) {
 
-    // vector of string to store parameters
-    std::vector<std::string> arg_v;
-    for(int i = 0; i < argc; i++){
-        arg_v.push_back(argv[i]);
+    // store program arguments as string
+    std::vector<std::string> v_arg;
+    for(int i = 1; i < argc; i++){
+        v_arg.push_back(argv[i]);
     }
 
     // vector string to store lines from stdin
-    std::vector<std::string> input_v;
+    std::vector<std::string> v_input;
     std::string line;
-    while (getline(std::cin, line))
-    {
-        if (line.empty())
-            break;
-        input_v.push_back(line);
+
+    // parse the input
+    while (std::cin >> line) {
+
+        // put element into input vector
+        v_input.push_back(line);
     }
 
     // find the location of each parameter in input vectors
-    for(int i = 1; i < arg_v.size(); i++){
-        std::cout << where(arg_v.at(i), input_v) << std::endl;
+    for(int i = 0; i < v_arg.size(); i++){
+        std::cout << where(v_arg.at(i), v_input) << std::endl;
     }
 
     return 0;
