@@ -2,11 +2,12 @@
 #include <fstream>
 #include <map>
 #include <vector>
+#include <algorithm>
 
 // check if sequence is palindrome
 bool isPalindrome(std::string seq){
     std::string seq_c = seq;
-    reverse(seq_c.begin(), seq_c.end());
+    std::reverse(seq_c.begin(), seq_c.end());
     // compare original sequence and reversed sequence
     if(seq == seq_c){
         return true;
