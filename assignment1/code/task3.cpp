@@ -46,19 +46,25 @@ double getQuartile(std::vector<double>& v, int n) {
 
 int main(int argc, char* argv[]) {
 
+    // store program argument as integer
     std::istringstream iss(argv[1]);
     int n;
     iss >> n;
 
     while(1) {
-        std::vector<double> v;
+	// make vector for stroing data and result respectively
+        std::vector<std::vector<double>> v;
+	std::vector<std::vector<double>> v_result;
 
+	// get input as standard input and save it to the data vector
         double d;
+	std::vector<double> input_v;
         while (std::cin >> d) {
-            v.push_back(d);
+            input_v.push_back(d);
             if (std::cin.get() == '\n') {
                 break;
             }
+	    
         }
 
         sort(v);
