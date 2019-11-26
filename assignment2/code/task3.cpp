@@ -103,7 +103,8 @@ int main(int argc, const char* argv[]) {
         }
 
         if(start > end){
-            error_message = error_message + "Start coordinate is bigger than end coordinate;";
+            swap(start, end);
+            //error_message = error_message + "Start coordinate is bigger than end coordinate;";
         }
 
         if(start < 0 || end < 0)
@@ -112,7 +113,7 @@ int main(int argc, const char* argv[]) {
         if(!v.empty()){
             if (shared::chr_order[v.back().getChr()] > shared::chr_order[chr])
                 error_message = error_message + "Chromosome is not sorted; ";
-            else if (shared::chr_order[v.back().getChr()] == shared::chr_order[chr]) {
+            else if (v.back().getChr() == chr) {
                 if (v.back().getStart() > start)
                     error_message = error_message + "Coordinate is not sorted; ";
             }
@@ -120,7 +121,7 @@ int main(int argc, const char* argv[]) {
 
         if(!error_message.empty()){
             error_message = "Error! " + error_message;
-            cout<<error_message<<endl;
+            cerr<<error_message<<endl;
             exit(1);
         }
 
