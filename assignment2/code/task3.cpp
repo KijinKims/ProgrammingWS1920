@@ -98,18 +98,12 @@ int main(int argc, const char* argv[]) {
         istringstream iss(line);
         iss >> chr >> start >> end;
 
-        for(auto& c : chr)
-        {
-            c = tolower(c);
-        }
-
         if ( shared::chr_order.find(chr) == shared::chr_order.end() ) {
             error_message = error_message + "Invalid chromosome name; ";
         }
 
         if(start > end){
-            swap(start, end);
-            std::cout<<"Warning: start coordinate is bigger than end coordinate. It will be fixed in output file."<<endl;
+            error_message = error_message + "Start coordinate is bigger than end coordinate;";
         }
 
         if(start < 0 || end < 0)
