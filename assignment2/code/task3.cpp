@@ -7,7 +7,8 @@
 
 using namespace std;
 
-namespace shared{
+class Manager{
+public:
     int dist = 0;
     int cluster_count = 1;
     map<string, int> chr_order = { {"chr1", 1}, {"chr2", 2}, {"chr3", 3},
@@ -18,7 +19,8 @@ namespace shared{
                                    {"chr16", 16}, {"chr17", 17}, {"chr18", 18},
                                    {"chr19", 19}, {"chr20", 20}, {"chr21", 21},
                                    {"chr22", 22}, {"chrX", 23}, {"chrY", 24}};
-}
+
+};
 
 class Gene{
 private:
@@ -46,27 +48,28 @@ public:
         return end;
     }
 
-    void setCluster(){
-        cluster = shared::cluster_count;
-    }
-
     int getCluster() const{
         return cluster;
     }
 
+    void setCluster(Manager& manager){
+        cluster = manager.cluster_count;
+    }
+
     friend bool inSameChr(const Gene& gene, const Gene& otherGene);
 
-    friend bool inSameCluster(const Gene& gene, const Gene& otherGene);
+    friend bool inSameCluster(const Gene& gene, const Gene& otherGene, Manager manager);
 
     friend ofstream& operator<<(ofstream& os, const Gene& gene);
 };
+
 
 bool inSameChr(const Gene& gene, const Gene& otherGene) {
     return gene.chr.compare(otherGene.chr) ==0;
 }
 
-bool inSameCluster(const Gene& gene, const Gene& otherGene){
-    return abs(gene.middle - otherGene.middle) < shared::dist;
+bool inSameCluster(const Gene& gene, const Gene& otherGene, Manager manager){
+    return abs(gene.middle - otherGene.middle) < manager.dist;
 }
 
 ofstream& operator<<(ofstream& os, const Gene& ge){
@@ -76,11 +79,12 @@ ofstream& operator<<(ofstream& os, const Gene& ge){
 
 int main(int argc, const char* argv[]) {
 
-    ifstream input(argv[1]);
-    shared::dist = strtol(argv[2], NULL, 10);
-    shared::cluster_count = 1;
-    ofstream output(argv[3]);
+    Manager manager;
 
+    ifstream input(argv[1]);
+    manager.dist = strtol(argv[2], NULL, 10);
+    manager.cluster_count = 1;
+    ofstream output(argv[3]);
 
     vector<Gene> v;
     string chr;
@@ -98,20 +102,19 @@ int main(int argc, const char* argv[]) {
         istringstream iss(line);
         iss >> chr >> start >> end;
 
-        if ( shared::chr_order.find(chr) == shared::chr_order.end() ) {
+        if ( manager.chr_order.find(chr) == manager.chr_order.end() ) {
             error_message = error_message + "Invalid chromosome name; ";
         }
 
         if(start > end){
             swap(start, end);
-            //error_message = error_message + "Start coordinate is bigger than end coordinate;";
         }
 
         if(start < 0 || end < 0)
             error_message = error_message + "Start or end coordinate is below zero. Invalid coordinate; ";
 
         if(!v.empty()){
-            if (shared::chr_order[v.back().getChr()] > shared::chr_order[chr])
+            if (manager.chr_order[v.back().getChr()] > manager.chr_order[chr])
                 error_message = error_message + "Chromosome is not sorted; ";
             else if (v.back().getChr() == chr) {
                 if (v.back().getStart() > start)
@@ -132,14 +135,14 @@ int main(int argc, const char* argv[]) {
     v.at(0).setCluster();
     for(int i = 0; i < v.size() - 1; i++){
         if(!inSameChr(v.at(i), v.at(i+1))) {
-            shared::cluster_count++;
-            v.at(i+1).setCluster();
+            manager.cluster_count++;
+            v.at(i+1).setCluster(manager);
             continue;
         }
 
-        if(!inSameCluster(v.at(i), v.at(i+1)))
-            shared::cluster_count++;
-        v.at(i+1).setCluster();
+        if(!inSameCluster(v.at(i), v.at(i+1), manager))
+            manager.cluster_count++;
+        v.at(i+1).setCluster(manager);
     }
 
     for(auto& x: v){
