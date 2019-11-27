@@ -132,7 +132,7 @@ int main(int argc, const char* argv[]) {
 
     }
 
-    v.at(0).setCluster();
+    v.at(0).setCluster(manager);
     for(int i = 0; i < v.size() - 1; i++){
         if(!inSameChr(v.at(i), v.at(i+1))) {
             manager.cluster_count++;
