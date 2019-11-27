@@ -115,7 +115,8 @@ int main(int argc, const char* argv[]) {
 
     string s;
 
-    cin >> s;
+    while (cin >> s) {
+    }
 
     s = " " + s;
 
