@@ -164,12 +164,12 @@ int main(int argc, const char* argv[]) {
     }
      */
 
-    cout<<m[1][len]<<endl<<endl;
+    cout<<m[1][len]<<endl;
     set<string> string_s;
     unsigned size = tb[1][len].size();
     for(auto& e :tb[1][len]) string_s.insert( convertToString(e, len) );
     for(auto& e :string_s){
-        cout<<e<<endl;
+        cout<<e<<endl<<endl;
     }
 
     return 0;
