@@ -119,6 +119,17 @@ int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<in
     return max_comp;
 }
 
+int calculate_recr(string s, vector<vector<int>>& m, int i, int j){
+    int max_comp = 0;
+    for(int k = i; k < j-2; k++) {
+        int comp = calculate_recr(s, m, i, k - 1) + calculate_recr(s, m, k + 1, j - 1) + 1;
+        if (max_comp < comp){
+            max_comp = comp;
+        }
+    }
+    return max(calculate_recr(s, m, i, j-1), max_comp);
+}
+
 // convert integer pair into string
 string convertToString(set<pair<int,int>> s, int len){
     string init(len, '.');
@@ -148,6 +159,7 @@ int main(int argc, const char* argv[]) {
 
     // make dynamic programming matrix
     vector<vector<int>> m;
+    vector<vector<int>> m_recr;
     vector<vector<vector<set<pair<int,int>>>>> tb;
 
     m.resize(len+1);
@@ -155,21 +167,23 @@ int main(int argc, const char* argv[]) {
     for(int i = 0 ; i < len+1 ; ++i)
     {
         m[i].resize(len+1);
+        m_recr[i].resize(len+1);
         tb[i].resize(len+1);
     }
 
     for(int i = 0; i <= len; i++){
         int j = i-1;
         m[i][j] = 0;
+        m_recr[i][j] = 0;
     }
 
     for(int k = 0; k <= 2; k++){
         for(int i = 1; i <= len - k; i++){
             int j = i + k;
             m[i][j] = 0;
+            m_recr[i][j] = 0;
         }
     }
-
 
     for(int k = 3; k < len; k++){
         for(int i = 1; i <= len - k; i++){
@@ -187,16 +201,17 @@ int main(int argc, const char* argv[]) {
         }
     }
 
+    /*
     for (int i = 1; i < m.size(); ++i) {
         for (int j = 1; j < m.at(i).size(); ++j) {
             cout << m[i][j] << " ";
         }
         cout << endl;
     }
+     */
 
-    cout<<m[1][len]<<endl;
+    cout<<calculate_recr(s, m_recr, 1, len) <<endl;
     set<string> string_s;
-    unsigned size = tb[1][len].size();
     for(auto& e :tb[1][len]) string_s.insert( convertToString(e, len) );
     for(auto& e :string_s){
         cout<<e<<endl;
