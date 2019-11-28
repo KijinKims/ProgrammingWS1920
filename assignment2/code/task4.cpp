@@ -31,8 +31,10 @@ bool compliment(char& a, char& b){
 int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<int,int>>>>>& tb, int i, int j){
 
     // if loop is smaller than 2, secondary structure cannot be made
-    if(i >= j-2)
+    if(i == j)
         return 0;
+    if(i-1 == j)
+	return 0;
 
     // temporary vector for storing secondary structure for index i,j
     vector<set<pair<int,int>>> tmp;
