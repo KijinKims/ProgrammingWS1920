@@ -154,7 +154,7 @@ int main(int argc, const char* argv[]) {
         tb[i].resize(len+1);
     }
 
-    for(int i =1; i < len; i++){
+    for(int i =1; i <= len; i++){
 	    int j = i;
 	    int k = i-1;
 	    m[i][j] = 0;
