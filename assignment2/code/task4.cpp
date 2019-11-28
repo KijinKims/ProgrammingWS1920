@@ -155,14 +155,12 @@ int main(int argc, const char* argv[]) {
     }
 
     for(int i =1; i <= len; i++){
-	    int j = i;
-	    int k = i-1;
-	    m[i][j] = 0;
-	    m[i][k] = 0;
+	    for(int j = i-1; j <= i+2; j++)
+	        m[i][j] = 0;
     }
 
 
-    for(int k = 1; k < len; k++){
+    for(int k = 3; k < len; k++){
         for(int i = 1; i <= len - k; i++){
             int j = i + k;
             m[i][j] = calculate(s, m, tb, i, j);
