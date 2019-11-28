@@ -99,6 +99,10 @@ int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<in
             tmp.push_back(e);
     }
 
+    if (max_comp == 0){
+        return 0;
+    }
+
     // save tmp into table
     tb[i][j] = tmp;
 
@@ -154,11 +158,17 @@ int main(int argc, const char* argv[]) {
         tb[i].resize(len+1);
     }
 
-    for(int i =1; i <= len; i++){
-	    for(int j = i-1; j <= i+2; j++)
-	        m[i][j] = 0;
+    for(int i = 0; i <= len; i++){
+        int j = i-1;
+        m[i][j] = 0;
     }
 
+    for(int k = 0; k <= 2; k++){
+        for(int i = 1; i <= len - k; i++){
+            int j = i + k;
+            m[i][j] = 0;
+        }
+    }
 
     for(int k = 3; k < len; k++){
         for(int i = 1; i <= len - k; i++){
@@ -166,14 +176,16 @@ int main(int argc, const char* argv[]) {
             m[i][j] = calculate(s, m, tb, i, j);
         }
     }
-
-    for(int i = len; i > 1; i--){
-        int j = len;
-        if(m[i][j] == m[1][j])
-            for(auto& e :tb[i][j])
-                tb[1][j].push_back(e);
+/*
+    for(int k = 1; k <=3 ; k++) {
+        for (int j = len - 3 + k; j <= len; j++) {
+            if(m[k][j] == m[1][j] && (k!=1 && j!=len)) {
+                for (auto &e :tb[k][j])
+                    tb[1][j].push_back(e);
+            }
+        }
     }
-
+*/
     /*
     for (int i = 1; i < m.size(); ++i) {
         for (int j = 1; j < m.at(i).size(); ++j) {
