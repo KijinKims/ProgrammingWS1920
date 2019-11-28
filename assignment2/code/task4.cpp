@@ -30,12 +30,6 @@ bool compliment(char& a, char& b){
 // calculate the best score for range (i, j) and also trace the corresponding secondary structure
 int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<int,int>>>>>& tb, int i, int j){
 
-    // if loop is smaller than 2, secondary structure cannot be made
-    if(i == j)
-        return 0;
-    if(i-1 == j)
-	return 0;
-
     // temporary vector for storing secondary structure for index i,j
     vector<set<pair<int,int>>> tmp;
 
@@ -160,9 +154,15 @@ int main(int argc, const char* argv[]) {
         tb[i].resize(len+1);
     }
 
+    for(int i =1; i < len; i++){
+	    int j = i;
+	    int k = i-1;
+	    m[i][j] = 0;
+	    m[i][k] = 0;
+    }
 
 
-    for(int k = 3; k < len; k++){
+    for(int k = 1; k < len; k++){
         for(int i = 1; i <= len - k; i++){
             int j = i + k;
             m[i][j] = calculate(s, m, tb, i, j);
