@@ -11,18 +11,18 @@ int main() {
     Dataframe df;
     df.add_column(vector<int>{5,4,3,2,1});
     cout << df;
-    // df.add_column(vector<string>{"A","B","C","D","E"});
-    // cout << df;
-    // df.set_colnames(vector<string>{"Index", "Category"});
-    // cout << df;
-    // df.set_rownames(vector<string>{"Sample1", "Sample2", "Sample3", "Sample4", "Sample5"});
+    df.add_column(vector<string>{"A","B","C","D","E"});
+    cout << df;
+    //df.set_colnames(vector<string>{"Index", "Category"});
+    //cout << df;
+    //df.set_rownames(vector<string>{"Sample1", "Sample2", "Sample3", "Sample4", "Sample5"});
     // cout << df;
     // df.swap_columns(0,1);
     // cout << df;
     // df.swap_columns("Category", "Index");
     // cout << df;
-    // cout << "Number of rows: " << df.nrows() << endl;
-    // cout << "Number of columns: " << df.ncols() << endl;
+     cout << "Number of rows: " << df.nrows() << endl;
+     cout << "Number of columns: " << df.ncols() << endl;
 
     // std::function<int(int&)> sqrd = [](int& i) { return i=i*i; };
     // std::function<string(string&)> s_append = [](string& s) { return s +="_ABC"; };

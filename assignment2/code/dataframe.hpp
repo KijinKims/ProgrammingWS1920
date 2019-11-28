@@ -32,10 +32,11 @@ public:
 
     template<typename T>
     void add_column(std::vector<T> vect){
-        std::vector<ColType> new_col;
+        std::vector<ColType*> new_col;
 
         for(T& e:vect){
-            new_col.push_back(ColType(e));
+            ColType* ptr = new ColType(e);
+            new_col.push_back(ptr);
         }
 
         data.push_back(new_col);
@@ -47,6 +48,14 @@ public:
 
     int ncols(){
         return data.size();
+    }
+
+    void set_colnames(std::vector<std::string>& v){
+        colnames = v;
+    }
+
+    void set_rownames(std::vector<std::string>& v){
+        rownames = v;
     }
 
     friend std::ostream& operator<< (std::ostream& os, const Dataframe& df);
@@ -61,7 +70,7 @@ public:
     void apply(const std::string& c, Fun l);
 
 private:
-    std::list<std::vector<ColType>> data;
+    std::list<std::vector<ColType*>> data;
     std::vector<std::string> colnames;
     std::vector<std::string> rownames;
 
