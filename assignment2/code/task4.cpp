@@ -134,7 +134,7 @@ int main(int argc, const char* argv[]) {
 
     string s;
 
-    while (cin >> s) {
+    while(cin >> s){
     }
 
     s = " " + s;
@@ -170,13 +170,14 @@ int main(int argc, const char* argv[]) {
         }
     }
 
+
     for(int k = 3; k < len; k++){
         for(int i = 1; i <= len - k; i++){
             int j = i + k;
             m[i][j] = calculate(s, m, tb, i, j);
         }
     }
-/*
+
     for(int k = 1; k <=3 ; k++) {
         for (int j = len - 3 + k; j <= len; j++) {
             if(m[k][j] == m[1][j] && (k!=1 && j!=len)) {
@@ -185,15 +186,13 @@ int main(int argc, const char* argv[]) {
             }
         }
     }
-*/
-    /*
+
     for (int i = 1; i < m.size(); ++i) {
         for (int j = 1; j < m.at(i).size(); ++j) {
             cout << m[i][j] << " ";
         }
         cout << endl;
     }
-     */
 
     cout<<m[1][len]<<endl;
     set<string> string_s;
