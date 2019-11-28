@@ -30,6 +30,10 @@ bool compliment(char& a, char& b){
 // calculate the best score for range (i, j) and also trace the corresponding secondary structure
 int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<int,int>>>>>& tb, int i, int j){
 
+    if(i >= j-2){
+        return 0;
+    }
+
     // temporary vector for storing secondary structure for index i,j
     vector<set<pair<int,int>>> tmp;
 
@@ -120,6 +124,11 @@ int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<in
 }
 
 int calculate_recr(string s, vector<vector<int>>& m, int i, int j){
+
+    if(i >= j-2){
+        return 0;
+    }
+
     int max_comp = 0;
     for(int k = i; k < j-2; k++) {
         int comp = calculate_recr(s, m, i, k - 1) + calculate_recr(s, m, k + 1, j - 1) + 1;
