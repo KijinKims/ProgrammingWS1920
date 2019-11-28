@@ -8,9 +8,9 @@ using namespace std;
 int main() {
     // The following should compile
 
-    // Dataframe df;
-    // df.add_column(vector<int>{5,4,3,2,1});
-    // cout << df;
+    Dataframe df;
+    df.add_column(vector<int>{5,4,3,2,1});
+    cout << df;
     // df.add_column(vector<string>{"A","B","C","D","E"});
     // cout << df;
     // df.set_colnames(vector<string>{"Index", "Category"});

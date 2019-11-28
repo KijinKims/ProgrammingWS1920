@@ -15,21 +15,60 @@ protected:
     virtual void print(std::ostream& os) const = 0;
 };
 
-inline std::ostream& operator<< (std::ostream& os, const GenericDataType& v);
+inline std::ostream& operator<< (std::ostream& os, const GenericDataType& v){
+    v.print(os);
+    return os;
+};
 
 // implement a class DataType<T> that is derived from GenericDataType and holds the actual value
-
+template <typename T>
+class DataType : public GenericDataType {
+public:
+    explicit DataType(const T& v){this->value = v;}
+    std::unique_ptr<GenericDataType> clone() const override {
+        GenericDataType* ptr = new DataType<T>(value);
+        std::unique_ptr<GenericDataType> new_ptr = std::unique_ptr<GenericDataType>(ptr);
+        return new_ptr;
+    }
+    bool operator==(const GenericDataType& other) const override {
+        return value == dynamic_cast<const DataType&>(other).value;
+    }
+    bool operator<(const GenericDataType& other) const override {
+        return value < dynamic_cast<const DataType&>(other).value;
+    }
+protected:
+    T value;
+    void print(std::ostream& os) const override {
+        os << value;
+    }
+};
 
 class ColType {
 public:
     template <typename ValueType>
-    explicit ColType(const ValueType& value);
-    ColType(const ColType& other);
-    ColType& operator=(const ColType& other);
-    GenericDataType& get();
-    const GenericDataType& get() const;
-    bool operator==(const ColType& other) const;
-    bool operator<(const ColType& other) const;
+    explicit ColType(const ValueType& value){
+        GenericDataType* ptr = new DataType<ValueType>(value);
+        container = std::unique_ptr<GenericDataType>(ptr);
+    }
+
+    ColType(const ColType& other){
+        *container = *other.container;
+    }
+    ColType& operator=(const ColType& other){
+        *container = *other.container;
+    }
+    GenericDataType& get(){
+        return *container;
+    }
+    const GenericDataType& get() const{
+        return *container;
+    }
+    bool operator==(const ColType& other) const{
+        (*container).operator==(*(other.container)) ;
+    }
+    bool operator<(const ColType& other) const{
+        (*container).operator<(*(other.container));
+    }
 private:
     std::unique_ptr<GenericDataType> container;
 };

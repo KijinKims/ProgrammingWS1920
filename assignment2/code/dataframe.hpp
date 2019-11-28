@@ -30,6 +30,27 @@ class Dataframe {
 public:
     class Invalid{};
 
+    template<typename T>
+    void add_column(std::vector<T> vect){
+        std::vector<ColType> new_col;
+
+        for(T& e:vect){
+            new_col.push_back(ColType(e));
+        }
+
+        data.push_back(new_col);
+    }
+
+    int nrows(){
+        return data.back().size();
+    }
+
+    int ncols(){
+        return data.size();
+    }
+
+    friend std::ostream& operator<< (std::ostream& os, const Dataframe& df);
+
     template<typename Fun>
     void apply(const size_t i, Fun l) {
         // to get the value of the dataframe and the correct type requested by the user
