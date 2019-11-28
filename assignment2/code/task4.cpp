@@ -5,19 +5,6 @@
 
 using namespace std;
 
-// to ge the contents of vector easily ----will be depricated
-ostream& operator<<(ostream& os, vector<set<pair<int, int>>>& v){
-    for (int i = 0; i < v.size(); ++i) {
-        for (auto& j : v.at(i))
-        {
-            os << j.first << " " << j.second << "  ";
-        }
-        os<<endl;
-    }
-    os<<endl;
-    return os;
-}
-
 // check if base pair is complimentary
 bool compliment(char& a, char& b){
     set<pair<char, char>> s {make_pair('A', 'U'), make_pair('U', 'A'),
@@ -30,16 +17,12 @@ bool compliment(char& a, char& b){
 // calculate the best score for range (i, j) and also trace the corresponding secondary structure
 int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<int,int>>>>>& tb, int i, int j){
 
-    if(i >= j-2){
-        return 0;
-    }
-
-    // temporary vector for storing secondary structure for index i,j
+    // temporary vector for storing secondary structure for range(i,j)
     vector<set<pair<int,int>>> tmp;
 
-    // check if best score can be made from sum of scores of range(i, k-1) and range(k+1, j-1) added by 1 (k and j)
+    // check if best score can be made from sum of scores of range(i, k-1), range(k+1, j-1) added by 1 (k and j)
     int max_comp = 0;
-    // k can be from i to j-3 (because if k is j-2, it cannot make structure)
+    // k can be from i to j-3 (because if k is bigger than j-2, range(k,j) cannot make structure)
     for(int k = i; k < j-2; k++){
         // we will only find the best score
         if(compliment(s[k], s[j]) && m[i][k-1] + m[k+1][j-1] + 1 >= max_comp) {
@@ -49,7 +32,7 @@ int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<in
                 tmp.clear();
             }
 
-            // if score is current best score, corresponding structure will be added to temporary vector
+            // if sum of scores is current best score, corresponding structure will be added to temporary vector
             // in addition to new pair(k,j), all combination structures from range(i, k-1) and range(k+1, j-1) will be pushed into vector
             if(!tb[i][k-1].empty()){
                 for(auto& e : tb[i][k-1]){
@@ -103,22 +86,14 @@ int calculate(string s, vector<vector<int>>& m, vector<vector<vector<set<pair<in
             tmp.push_back(e);
     }
 
+    // if best score is 0, vector should not be saved
     if (max_comp == 0){
         return 0;
     }
 
-    // save tmp into table
+    // save secondary structures into table
     tb[i][j] = tmp;
 
-/*
-    cout<<"i is "<<i<<". j is "<<j<<endl;
-    for (int x = 1; x < tb.size(); ++x) {
-        for (int y = 1; y < tb.at(x).size(); ++y) {
-            cout << "i: "<< x << " j: "<<y<<endl;
-            cout << tb[x][y];
-        }
-    }
-*/
     // return best score
     return max_comp;
 }
@@ -135,16 +110,16 @@ string convertToString(set<pair<int,int>> s, int len){
 }
 
 int main(int argc, const char* argv[]) {
-
+    // take input string
     string s;
 
     while(cin >> s){
     }
-
+    // make 1-digit indexing
     s = " " + s;
 
     int len = s.length() - 1;
-
+    // if length of string is smaller than 0, it cannot make any structure
     if(len <= 3){
         cout << "0" << endl;
         return 0;
@@ -152,8 +127,10 @@ int main(int argc, const char* argv[]) {
 
     // make dynamic programming matrix
     vector<vector<int>> m;
+    // make matrix for storing secondary structures
     vector<vector<vector<set<pair<int,int>>>>> tb;
 
+    // initialize the matrices
     m.resize(len+1);
     tb.resize(len+1);
     for(int i = 0 ; i < len+1 ; ++i)
@@ -162,11 +139,12 @@ int main(int argc, const char* argv[]) {
         tb[i].resize(len+1);
     }
 
+    // initialize the matrix
     for(int i = 0; i <= len; i++){
         int j = i-1;
         m[i][j] = 0;
     }
-
+    // initialize the matrix
     for(int k = 0; k <= 2; k++){
         for(int i = 1; i <= len - k; i++){
             int j = i + k;
@@ -174,6 +152,7 @@ int main(int argc, const char* argv[]) {
         }
     }
 
+    // calculate the best score and secondary structure
     for(int k = 3; k < len; k++){
         for(int i = 1; i <= len - k; i++){
             int j = i + k;
@@ -181,6 +160,8 @@ int main(int argc, const char* argv[]) {
         }
     }
 
+    // because there is minimum loop length, all best secondary structures are not saved into 1,len index
+    // so it shoud be collected from cells around the position
     for(int k = 1; k <=3 ; k++) {
         for (int j = len - 3 + k; j <= len; j++) {
             if(m[k][j] == m[1][j] && (k!=1 && j!=len)) {
@@ -190,17 +171,10 @@ int main(int argc, const char* argv[]) {
         }
     }
 
-    /*
-    for (int i = 1; i < m.size(); ++i) {
-        for (int j = 1; j < m.at(i).size(); ++j) {
-            cout << m[i][j] << " ";
-        }
-        cout << endl;
-    }
-     */
-
+    // print the best score
     cout<<m[1][len]<<endl;
     set<string> string_s;
+    // print string-converted secondary structures
     for(auto& e :tb[1][len]) string_s.insert( convertToString(e, len) );
     for(auto& e :string_s){
         cout<<e<<endl;
