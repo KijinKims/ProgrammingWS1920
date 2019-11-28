@@ -143,7 +143,7 @@ int main(int argc, const char* argv[]) {
 
     if(len <= 3){
         cout << "0" << endl;
-        return
+        return 0;
     }
 
     // make dynamic programming matrix
